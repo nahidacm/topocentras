@@ -1,10 +1,15 @@
 const fs = require("fs");
 const csv = require("csv-parser");
 const { stringify } = require("csv-stringify");
-
+const pLimit = require("p-limit").default;
 const path = require("path");
 const axios = require("axios");
+
+const CONCURRENCY = 5;
 const BASE_DIR = "./downloads";
+
+const limit = pLimit(CONCURRENCY);
+const tasks = [];
 
 // =======================
 // CLI ARGUMENTS
@@ -34,7 +39,7 @@ const EXPECTED_COLUMNS = [
 
 const OUTPUT_COLUMNS = [
     "sku", "product_type", "attribute_set_code", "name", "description", "price",
-    "group_price_customer_group", "group_price", "product_websites",
+    "group_price_customer_group", "group_price", "product_websites", "url_key",
     "product_online", "visibility", "is_in_stock", "categories", "base_image", "small_image", "thumbnail_image"
 ];
 
@@ -146,7 +151,7 @@ fs.createReadStream(inputFile)
         const cleanCustomLabel0 = row.custom_label_0
             ? row.custom_label_0.replace(/[^a-zA-Z0-9]/g, "")
             : "";
-        const category = "Default Category/" + (cleanCustomLabel0 || "");
+        const category = "Default Category/All Categories/" + (cleanCustomLabel0 || "");
 
         // ================= OUTPUT ROW =================
 
@@ -160,6 +165,7 @@ fs.createReadStream(inputFile)
             group_price_customer_group: groupPrice ? "Topo Klubas" : "",
             group_price: groupPrice,
             product_websites: "base",
+            url_key: urlKey,
             product_online: 1,
             visibility: "Catalog, Search",
             is_in_stock: isInStock,
@@ -184,14 +190,17 @@ fs.createReadStream(inputFile)
 
         // ================= IMAGE DOWNLOAD (OPTIONAL) =================
         if (imageDownload) {
-            downloadImage(row.image_link);
+            tasks.push(limit(() => downloadImage(row.image_link)));
+            // downloadImage(row.image_link);
         }
     })
     .on("end", () => {
         outputStream.end();
         ignoredStream.end();
         advancedPriceStream.end();
-        console.log("Processing completed.");
+        Promise.all(tasks).then(() => {
+            console.log("Processing completed.");
+        });
     })
     .on("error", (err) => {
         console.error("Error:", err.message);
