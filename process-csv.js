@@ -34,8 +34,17 @@ const EXPECTED_COLUMNS = [
 
 const OUTPUT_COLUMNS = [
     "sku", "product_type", "attribute_set_code", "name", "price",
-    "group_price_customer_group", "group_price",
-    "product_online", "visibility", "is_in_stock", "base_image", "small_image", "thumbnail_image"
+    "group_price_customer_group", "group_price", "product_websites",
+    "product_online", "visibility", "is_in_stock", "categories", "base_image", "small_image", "thumbnail_image"
+];
+
+const ADVANCED_PRICE_COLUMNS = [
+    "sku",
+    "tier_price_website",
+    "tier_price_customer_group",
+    "tier_price_qty",
+    "tier_price",
+    "tier_price_value_type"
 ];
 
 // =======================
@@ -58,6 +67,9 @@ outputStream.pipe(fs.createWriteStream("output_file.csv"));
 
 const ignoredStream = stringify({ header: true, columns: ["row_number", "reason"] });
 ignoredStream.pipe(fs.createWriteStream("ignored.csv"));
+
+const advancedPriceStream = stringify({ header: true, columns: ADVANCED_PRICE_COLUMNS });
+advancedPriceStream.pipe(fs.createWriteStream("advanced_price.csv"));
 
 // =======================
 // PROCESSING
@@ -116,6 +128,7 @@ fs.createReadStream(inputFile)
 
         const price = removeEUR(row.price);
         const salePrice = removeEUR(row.sale_price);
+        const memberPrice = row.member_price ? removeEUR(row.member_price) : null;
 
         let groupPrice = "";
         if (row.member_price) {
@@ -131,6 +144,11 @@ fs.createReadStream(inputFile)
 
         const baseImage = row.image_link.replace(IMAGE_PREFIX, "");
 
+        const cleanCustomLabel0 = row.custom_label_0
+            ? row.custom_label_0.replace(/[^a-zA-Z0-9]/g, "")
+            : "";
+        const category = "Default Category/" + (cleanCustomLabel0 || "");
+
         // ================= OUTPUT ROW =================
 
         outputStream.write({
@@ -141,13 +159,28 @@ fs.createReadStream(inputFile)
             price: price,
             group_price_customer_group: groupPrice ? "Topo Klubas" : "",
             group_price: groupPrice,
+            product_websites: "base",
             product_online: 1,
             visibility: "Catalog, Search",
             is_in_stock: isInStock,
+            categories: category,
             base_image: baseImage,
             small_image: baseImage,
             thumbnail_image: baseImage
         });
+
+        // ================= ADVANCED PRICE =================
+        if (memberPrice) {
+            advancedPriceStream.write({
+                sku: row.id,
+                tier_price_website: "All Websites [EUR]",
+                tier_price_customer_group: "Topo Klubas",
+                tier_price_qty: 1,
+                tier_price: memberPrice,
+                tier_price_value_type: "Fixed"
+            });
+        }
+
 
         // ================= IMAGE DOWNLOAD (OPTIONAL) =================
         if (imageDownload) {
@@ -157,6 +190,7 @@ fs.createReadStream(inputFile)
     .on("end", () => {
         outputStream.end();
         ignoredStream.end();
+        advancedPriceStream.end();
         console.log("Processing completed.");
     })
     .on("error", (err) => {
