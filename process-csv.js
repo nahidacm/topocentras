@@ -33,7 +33,7 @@ const EXPECTED_COLUMNS = [
 ];
 
 const OUTPUT_COLUMNS = [
-    "sku", "product_type", "attribute_set_code", "name", "price",
+    "sku", "product_type", "attribute_set_code", "name", "description", "price",
     "group_price_customer_group", "group_price", "product_websites",
     "product_online", "visibility", "is_in_stock", "categories", "base_image", "small_image", "thumbnail_image"
 ];
@@ -127,7 +127,6 @@ fs.createReadStream(inputFile)
         // ================= TRANSFORM =================
 
         const price = removeEUR(row.price);
-        const salePrice = removeEUR(row.sale_price);
         const memberPrice = row.member_price ? removeEUR(row.member_price) : null;
 
         let groupPrice = "";
@@ -156,6 +155,7 @@ fs.createReadStream(inputFile)
             product_type: "simple",
             attribute_set_code: "Default",
             name: row.title,
+            description: row.description,
             price: price,
             group_price_customer_group: groupPrice ? "Topo Klubas" : "",
             group_price: groupPrice,
