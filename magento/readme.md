@@ -87,10 +87,15 @@ php bin/magento cache:flush
 bin/magento setup:static-content:deploy -f
 ```
 
+#### Disable 2FA
+
+```bash
+bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth
+bin/magento module:disable Magento_TwoFactorAuth
+bin/magento setup:di:compile
+bin/magento cache:flush
+```
+
 #### DB backup and restore
 
 https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/tutorials/backup
-
-```
-
-```
