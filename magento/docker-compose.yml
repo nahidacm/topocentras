@@ -40,6 +40,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./src:/var/www/html
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     depends_on:
       - db
       - redis

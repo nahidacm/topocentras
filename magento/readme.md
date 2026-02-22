@@ -1,5 +1,7 @@
 ### Installation
 
+Ref: https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/composer
+
 ```bash
 docker compose build
 ```
@@ -62,11 +64,27 @@ php bin/magento setup:install \
 --opensearch-port=9200
 ```
 
+#### nginx conf
+
+```bash
+cp nginx.conf.sample nginx.conf
+```
+
 #### Change permissions
 
 ```bash
 chmod -R 777 /var/www/html/var
 chmod -R 777 /var/www/html/pub/media
+```
+
+#### Generate codes
+
+```bash
+rm -rf generated/* var/cache/* var/page_cache/*
+composer install
+php bin/magento setup:di:compile
+php bin/magento cache:flush
+bin/magento setup:static-content:deploy -f
 ```
 
 #### DB backup and restore
