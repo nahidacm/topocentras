@@ -57,7 +57,7 @@ php bin/magento setup:install \
 --admin-user=admin \
 --admin-password=Admin123! \
 --language=en_US \
---currency=USD \
+--currency=EUR \
 --timezone=Asia/Dhaka \
 --search-engine=opensearch \
 --opensearch-host=opensearch \
@@ -80,16 +80,17 @@ chmod -R 777 /var/www/html/pub/media
 #### Generate codes
 
 ```bash
-rm -rf generated/* var/cache/* var/page_cache/*
-composer install
-php bin/magento setup:di:compile
-php bin/magento cache:flush
+# rm -rf generated/* var/cache/* var/page_cache/*
+# composer install
+bin/magento setup:di:compile
+bin/magento cache:flush
 bin/magento setup:static-content:deploy -f
 ```
 
 #### Disable 2FA
 
 ```bash
+admin:adobe-ims:disable
 bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth
 bin/magento module:disable Magento_TwoFactorAuth
 bin/magento setup:di:compile
@@ -97,5 +98,9 @@ bin/magento cache:flush
 ```
 
 #### DB backup and restore
+
+```bash
+bin/magento setup:backup --db
+```
 
 https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/tutorials/backup

@@ -1,0 +1,9 @@
+{
+    "name": "topocentras/theme",
+    "description": "Topocentras theme extending Luma",
+    "require": {
+        "php": "~8.1.0||~8.2.0"
+    },
+    "type": "magento2-theme",
+    "version": "1.0.0"
+}
