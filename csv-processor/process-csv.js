@@ -4,6 +4,7 @@ const { stringify } = require("csv-stringify");
 const pLimit = require("p-limit").default;
 const path = require("path");
 const axios = require("axios");
+const { exit } = require("process");
 
 const CONCURRENCY = 5;
 const BASE_DIR = "./downloads";
@@ -56,13 +57,22 @@ const ADVANCED_PRICE_COLUMNS = [
 // HELPERS
 // =======================
 
-const isFloatEUR = (val) => /^\s*\d+(\.\d+)?\s*EUR\s*$/.test(val);
+const isFloatEUR = (val) => /^\s*\d+(\.\d+)?\s*EUR\s*$/.test(val.replace(",", ""));
 
 const removeEUR = (val) =>
-    val.replace("EUR", "").trim();
+    val.replace("EUR", "").replace(",", "").trim();
 
 const isValidNumber = (val) =>
     !isNaN(val) && val !== "";
+
+const isValidCustoLabel1 = (val) => {
+    return /^(\d+(,?\d+)*?|\d*\n\d*(,?\d+)*?)?$/u.test(val);
+}
+
+const isValidCustomLabel0 = (val) => {
+    // Category validation
+    return val.length < 1658;
+}
 
 // =======================
 // OUTPUT STREAMS
@@ -120,12 +130,16 @@ fs.createReadStream(inputFile)
             reason = "Invalid image_link";
         else if (row.sale_price?.trim() && !isFloatEUR(row.sale_price))
             reason = "Invalid sale_price";
-        else if (!isValidNumber(row.custom_label_1))
+        else if (!isValidCustoLabel1(row.custom_label_1))
             reason = "Invalid custom_label_1";
+        else if (!isValidCustomLabel0(row.custom_label_0))
+            reason = "Invalid custom_label_0";
 
         if (reason) {
             ignoredStream.write({ row_number: rowNum, reason });
             console.log(`Ignored row: ${rowNum}, reason: ${reason}`);
+            console.log("Row data:", row);
+            // exit(1);
             return;
         }
 
@@ -149,8 +163,11 @@ fs.createReadStream(inputFile)
         const baseImage = row.image_link.replace(IMAGE_PREFIX, "");
 
         const cleanCustomLabel0 = row.custom_label_0
-            ? row.custom_label_0.replace(/[^a-zA-Z0-9]/g, "")
+            ? row.custom_label_0.trim()
             : "";
+        // const cleanCustomLabel0 = row.custom_label_0
+        //     ? row.custom_label_0.replace(/[^a-zA-Z0-9]/g, "")
+        //     : "";
         const category = "Default Category/All Categories/" + (cleanCustomLabel0 || "");
 
         // ================= OUTPUT ROW =================
