@@ -1,0 +1,94 @@
+############################################
+# Magento 2
+############################################
+
+# Generated files
+/generated/
+/var/
+/pub/static/
+/pub/media/catalog/product/cache/
+/pub/media/tmp/
+/pub/media/wysiwyg/
+/pub/media/import/
+/pub/media/export/
+/pub/media/customer/
+/pub/media/downloadable/
+/pub/media/theme_customization/
+/pub/media/captcha/
+/pub/media/.thumbs/
+/pub/media/.htaccess
+/pub/media/catalog/*
+/setup/
+/dev/
+# Cache & logs
+/var/cache/
+/var/page_cache/
+/var/view_preprocessed/
+/var/log/
+/var/session/
+/var/report/
+
+# Static content
+/pub/static/*
+!/pub/static/.htaccess
+
+# Composer
+/vendor/
+/composer.phar
+
+# Node
+/node_modules/
+/package-lock.json
+/yarn.lock
+
+# IDE
+/.idea/
+/.vscode/
+/*.swp
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+/docker-compose.override.yml
+
+# PHPUnit
+/phpunit.xml
+.phpunit.result.cache
+
+# NPM
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+
+# Database dumps
+*.sql
+*.gz
+*.zip
+*.tar
+*.tar.gz
+
+############################################
+# Magento specific
+############################################
+
+# Ignore sample data
+/pub/media/catalog/category/
+/pub/media/catalog/tmp/
+
+# Ignore reports
+/var/import/
+/var/export/
+
+############################################
+# Optional (if deploying via build server)
+############################################
+
+# Ignore local config if needed
+/app/etc/env.php

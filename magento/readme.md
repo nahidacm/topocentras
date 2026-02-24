@@ -36,6 +36,8 @@ composer config --global github-oauth.github.com <GITHUB_TOKEN>
 
 #### Create Magento project
 
+Run inside php container
+
 ```bash
 composer create-project \
 --repository-url=https://repo.magento.com/ \
@@ -43,6 +45,8 @@ magento/project-community-edition .
 ```
 
 #### Install dependencies
+
+Run inside php container
 
 ```bash
 php bin/magento setup:install \
@@ -64,33 +68,44 @@ php bin/magento setup:install \
 --opensearch-port=9200
 ```
 
-#### nginx conf
+#### Copy config files
+
+Run from host
 
 ```bash
-cp nginx.conf.sample nginx.conf
+cp magento-nginx.conf src/
+cp magento.gitignore src/.gitignore
 ```
 
 #### Change permissions
 
+Run inside php container
+
 ```bash
 chmod -R 777 /var/www/html/var
-chmod -R 777 /var/www/html/pub/media
+chmod -R 777 /var/www/html/pub
 ```
 
 #### Generate codes
 
+Run inside php container
+
 ```bash
 # rm -rf generated/* var/cache/* var/page_cache/*
 # composer install
+bin/magento setup:upgrade
 bin/magento setup:di:compile
+bin/magento cache:clean
 bin/magento cache:flush
 bin/magento setup:static-content:deploy -f
 ```
 
 #### Disable 2FA
 
+Run inside php container
+
 ```bash
-admin:adobe-ims:disable
+bin/magento admin:adobe-ims:disable
 bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth
 bin/magento module:disable Magento_TwoFactorAuth
 bin/magento setup:di:compile
@@ -99,8 +114,17 @@ bin/magento cache:flush
 
 #### DB backup and restore
 
+Run inside php container
+
 ```bash
+bin/magento config:set system/backup/functionality_enabled 1
 bin/magento setup:backup --db
 ```
 
 https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/tutorials/backup
+
+#### Cheat sheet
+
+```bash
+bin/magento info:adminurl
+```

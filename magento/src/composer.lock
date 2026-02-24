@@ -182,16 +182,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.370.0",
+            "version": "3.370.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3cfb2c787c43efa546ba3b6b596956cbef5cdd53"
+                "reference": "273a9bbed9e73016be390b8428f7925f15ea053e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3cfb2c787c43efa546ba3b6b596956cbef5cdd53",
-                "reference": "3cfb2c787c43efa546ba3b6b596956cbef5cdd53",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/273a9bbed9e73016be390b8428f7925f15ea053e",
+                "reference": "273a9bbed9e73016be390b8428f7925f15ea053e",
                 "shasum": ""
             },
             "require": {
@@ -273,9 +273,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.370.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.370.1"
             },
-            "time": "2026-02-20T19:09:33+00:00"
+            "time": "2026-02-23T19:05:30+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2057,16 +2057,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "9.0.23",
+            "version": "9.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "c415b68b44f8f6d7bb0de79769de8b2189d8a055"
+                "reference": "6c31b050e667641cdc1cd1dc38497901f62c1d3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/c415b68b44f8f6d7bb0de79769de8b2189d8a055",
-                "reference": "c415b68b44f8f6d7bb0de79769de8b2189d8a055",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/6c31b050e667641cdc1cd1dc38497901f62c1d3c",
+                "reference": "6c31b050e667641cdc1cd1dc38497901f62c1d3c",
                 "shasum": ""
             },
             "require": {
@@ -2129,7 +2129,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2026-01-30T13:34:38+00:00"
+            "time": "2026-02-23T10:46:03+00:00"
         },
         {
             "name": "giggsey/locale",
