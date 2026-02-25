@@ -112,6 +112,15 @@ bin/magento setup:di:compile
 bin/magento cache:flush
 ```
 
+### Admin Settings
+
+- Set the default currency to "EUR".
+- Enable single store mode.
+- Set Stock Management to "No".
+- Create a customer group named "Topo Klubas".
+- Lcale to Lithunia
+- Set "Topocentras" theme
+
 #### DB backup and restore
 
 Run inside php container

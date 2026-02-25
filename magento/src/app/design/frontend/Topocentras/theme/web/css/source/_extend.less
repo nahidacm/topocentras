@@ -1,3 +1,58 @@
 @color-primary: #0a509b;
 @color-secondary: #fdcd01;
 @button-primary__background: #0a509b;
+@header-panel__background-color: #ffffff;
+@navigation-desktop-level0-item__active__border-color: @color-secondary;
+
+.nav-sections,
+.navigation {
+    background-color: @color-primary;
+}
+
+.page-header .panel.wrapper {
+    color: #000000;
+}
+.header.panel > .header.links > li > a {
+    color: @color-primary;
+}
+
+nav.navigation {
+    background-color: @color-primary;
+}
+
+@media screen and (min-width: 768px) {
+    .navigation .level0.active > .level-top,
+    .navigation .level0.has-active > .level-top {
+        background-color: #cfdbe8;
+    }
+}
+
+.product-item {
+    list-style: none;
+}
+
+.topo-klubas-price-container {
+    border-color: #dbdbdb;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 10px;
+    display: block;
+    padding-right: 50px;
+}
+
+.topo-klubas-price-title {
+    position: relative;
+    margin-top: -20px;
+    background: white;
+}
+
+.topo-klubas-price {
+    padding-top: 5px;
+}
+
+.topo-klubas-price span {
+    font-size: 25px;
+    vertical-align: text-bottom;
+    margin-left: 5px;
+}

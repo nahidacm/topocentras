@@ -1,9 +1,3 @@
-### Admin Settings
-
-- Set the default currency to "EUR".
-- Set Stock Management to "No".
-- Create a customer group named "Topo Klubas".
-
 ### Process CSV file
 
 To convert the provided CSV to Magento 2 format, run the following command:
